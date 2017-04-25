@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Hotel booking app</title>
+
+    <link th:if="${mode == 'development'}" rel='stylesheet' href='/webjars/bootstrap/3.3.6/css/bootstrap.css'/>
+    <link th:if="${mode == 'production'}" rel='stylesheet' href='/webjars/bootstrap/3.3.6/css/bootstrap.min.css'/>
+    <script type="text/javascript" src="/static/angular.min.js" th:src="@{/angular.min.js}"></script>
+    <script type="text/javascript" src="/static/app/app.module.js" th:src="@{/app/app.module.js}"></script>
+    <script type="text/javascript" src="/static/app/bookings.controller.js"
+            th:src="@{/app/bookings.controller.js}"></script>
+</head>
+<body ng-app="app" ng-controller="BookingsController as vm">
+<header>
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">Hotel Booking App</a>
+            </div>
+            <!--/*@thymesVar id="username" type="qlassalle.booking.ViewController"*/-->
+            <p class="navbar-text navbar-right" th:text="'Signed in as ' +  ${username}" style="margin-right: 10px;">
+                Signed in as Anonymous
+            </p>
+        </div>
+    </nav>
+</header>
+
+<div>
+    <div class="row">
+        <div class="col-lg-offset-2 col-lg-8">
+
+            <div class="row">
+                <div class="btn-group" role="group">
+                    <button ng-click="vm.getAll()" type="button" class="btn btn-default">All</button>
+                    <button ng-click="vm.getAffordable()" type="button" class="btn btn-default">Less than 100$</button>
+                </div>
+
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>Hotel</th>
+                        <th>Nights</th>
+                        <th>Price/Night</th>
+                        <th>Total price</th>
+                        <th style="width: 90px;"></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="booking in vm.bookings">
+                        <td>{{booking.hotelName}}</td>
+                        <td>{{booking.nbOfNights}}</td>
+                        <td>{{booking.pricePerNight}}</td>
+                        <td>{{booking.totalPrice}}</td>
+                        <td>
+                            <button class="btn btn-danger" ng-click="vm.deleteBooking(booking.id)">Delete</button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row" style="margin-top: 20px;">
+                <div class="col-md-6">
+                    <form class="form-control">
+                        <label for="hotelName">Hotel Name</label>
+                        <input type="text" id="hotelName" ng-model="hotel.hotelName"/>
+                        <label for="pricePerNight">Price per nights</label>
+                        <input type="text" id="pricePerNight" ng-model="hotel.pricePerNight"/>
+                        <label for="nbOfNights">Number of nights</label>
+                        <input type="text" id="nbOfNights" ng-model="hotel.nbOfNights"/>
+                        <button ng-click="vm.createHotel(hotel.hotelName, hotel.pricePerNight, hotel.nbOfNights)"
+                                class="addHotel btn btn-default">Add an hotel
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="footer" style="position: absolute; bottom: 0; background-color: #f5f5f5;">
+    <div class="container">
+        <!--/*@thymesVar id="datetime" type="qlassalle.booking.ViewController"*/-->
+        <p class="text-muted" th:text="'Page was rendered at ' + ${datetime}">Page was rendered today</p>
+    </div>
+</footer>
+</body>
+</html>
